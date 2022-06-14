@@ -8,7 +8,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-QUANTITY = 6
+QUANTITY = 20
 MAIN_PAGE = 'https://shop.adidas.jp'
 LIST_PAGE = MAIN_PAGE + '/item/?cat2Id=eoss22ss&order=10&gender=mens'
 
@@ -21,21 +21,21 @@ def get_product_details(product_tail, driver):
 
     driver.execute_script("window.scrollTo(0, 2000);")
     try:
-        WebDriverWait(driver, 20).until(
+        WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, "sizeDescription"))
         )
     except:
         pass
     driver.execute_script("window.scrollTo(0, 3000);")
     try:
-        WebDriverWait(driver, 20).until(
+        WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, "BVRRRatingNormalOutOf"))
         )
     except:
         pass
     driver.execute_script("window.scrollTo(0, 4000);")
     try:
-        WebDriverWait(driver, 20).until(
+        WebDriverWait(driver, 10).until(
             EC.presence_of_element_located((By.CLASS_NAME, "BVRRReviewDate"))
         )
     except:
@@ -274,6 +274,7 @@ def get_product_details(product_tail, driver):
 def get_product_list_contents():
     data = []
     page_no = 1
+    counter = 0
 
     file_dir = os.path.dirname(os.path.realpath(__file__))
     driver_path = os.path.join(file_dir, 'chromedriver')
@@ -285,10 +286,14 @@ def get_product_list_contents():
         html_cards = soup.find_all('div', class_="articleDisplayCard itemCardArea-cards test-card css-1lhtig4")
         for card in html_cards:
             try:
-                driver = Chrome(executable_path=driver_path)
-                card_obj = get_product_details(card.a.attrs['href'], driver)
-                driver.quit()
-                data.append(card_obj)
+                if card.a.attrs['href']:
+                    driver = Chrome(executable_path=driver_path)
+                    card_obj = get_product_details(card.a.attrs['href'], driver)
+                    driver.quit()
+                    data.append(card_obj)
+                    counter += 1
+                    if counter > 200:
+                        return data
             except:
                 pass
         page_no += 1

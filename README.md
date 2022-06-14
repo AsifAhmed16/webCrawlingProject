@@ -40,7 +40,7 @@ List I used to get data from - 'https://shop.adidas.jp/men/item/?cat2Id=eoss22ss
 ```
 
 # My Focus
- I tried to fetch data by scrapping approximately 250 details pages.
+ I tried to fetch data by scrapping approximately 200 details pages.
 
 # Field of Improvement
 To get more appropriate data, more validations should be introduced.
