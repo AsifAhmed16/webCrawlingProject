@@ -131,7 +131,6 @@ def get_product_details(product_tail, driver):
                 elif each.replace(' ', '') == "7XL" or each.replace(' ', '') == "6XO(7XL)":
                     for i in range(len(table_head) - 1):
                         xl7[table_head[i+1]] = row_items[i+1][count]
-
         except:
             pass
 
